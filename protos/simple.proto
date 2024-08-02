@@ -9,7 +9,12 @@ service MessageManager {
     rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
     rpc SubscribeChannel(SubscribeChannelRequest) returns (stream Message);
     rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
+    //rpc Ping(noParam) returns (noParam);
 
+}
+message noParam{
+    string conteudo = 1;
+    ChannelType type = 2;
 }
 
 message CreateChannelRequest {
@@ -69,8 +74,7 @@ message ReceiveMessageRequest {
 }
 
 message Message {
-    string channel = 1;
-    string content = 2;
+    string content = 1;
 }
 
 enum ChannelType {
@@ -80,6 +84,12 @@ enum ChannelType {
 
 // salvar mensagens para persistencia de dados nas listas
 
-message MessageList {
-    repeated Message messages = 1;
+message ChannelsList {
+    repeated Channel channels = 1;
+}
+
+message Channel {
+    string name = 1;
+    ChannelType type = 2;
+    repeated string messages = 3;
 }

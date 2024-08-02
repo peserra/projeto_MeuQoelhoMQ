@@ -41,7 +41,7 @@ class MessageManagerStub(object):
         """
         self.CreateChannel = channel.unary_unary(
                 '/teste_grpc.MessageManager/CreateChannel',
-                request_serializer=simple__pb2.CreateChannelRequest.SerializeToString,
+                request_serializer=simple__pb2.noParam.SerializeToString,
                 response_deserializer=simple__pb2.CreateChannelResponse.FromString,
                 _registered_method=True)
         self.RemoveChannel = channel.unary_unary(
@@ -68,6 +68,11 @@ class MessageManagerStub(object):
                 '/teste_grpc.MessageManager/ReceiveMessage',
                 request_serializer=simple__pb2.ReceiveMessageRequest.SerializeToString,
                 response_deserializer=simple__pb2.Message.FromString,
+                _registered_method=True)
+        self.Ping = channel.unary_unary(
+                '/teste_grpc.MessageManager/Ping',
+                request_serializer=simple__pb2.noParam.SerializeToString,
+                response_deserializer=simple__pb2.noParam.FromString,
                 _registered_method=True)
 
 
@@ -110,12 +115,18 @@ class MessageManagerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Ping(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MessageManagerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CreateChannel': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateChannel,
-                    request_deserializer=simple__pb2.CreateChannelRequest.FromString,
+                    request_deserializer=simple__pb2.noParam.FromString,
                     response_serializer=simple__pb2.CreateChannelResponse.SerializeToString,
             ),
             'RemoveChannel': grpc.unary_unary_rpc_method_handler(
@@ -143,6 +154,11 @@ def add_MessageManagerServicer_to_server(servicer, server):
                     request_deserializer=simple__pb2.ReceiveMessageRequest.FromString,
                     response_serializer=simple__pb2.Message.SerializeToString,
             ),
+            'Ping': grpc.unary_unary_rpc_method_handler(
+                    servicer.Ping,
+                    request_deserializer=simple__pb2.noParam.FromString,
+                    response_serializer=simple__pb2.noParam.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'teste_grpc.MessageManager', rpc_method_handlers)
@@ -169,7 +185,7 @@ class MessageManager(object):
             request,
             target,
             '/teste_grpc.MessageManager/CreateChannel',
-            simple__pb2.CreateChannelRequest.SerializeToString,
+            simple__pb2.noParam.SerializeToString,
             simple__pb2.CreateChannelResponse.FromString,
             options,
             channel_credentials,
@@ -306,6 +322,33 @@ class MessageManager(object):
             '/teste_grpc.MessageManager/ReceiveMessage',
             simple__pb2.ReceiveMessageRequest.SerializeToString,
             simple__pb2.Message.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Ping(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/Ping',
+            simple__pb2.noParam.SerializeToString,
+            simple__pb2.noParam.FromString,
             options,
             channel_credentials,
             insecure,

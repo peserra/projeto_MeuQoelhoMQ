@@ -13,6 +13,14 @@ class ChannelType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 SIMPLE: ChannelType
 MULTIPLE: ChannelType
 
+class noParam(_message.Message):
+    __slots__ = ("conteudo", "type")
+    CONTEUDO_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    conteudo: str
+    type: ChannelType
+    def __init__(self, conteudo: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ...) -> None: ...
+
 class CreateChannelRequest(_message.Message):
     __slots__ = ("name", "type")
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -96,15 +104,23 @@ class ReceiveMessageRequest(_message.Message):
     def __init__(self, channel: _Optional[str] = ..., timeout: _Optional[int] = ...) -> None: ...
 
 class Message(_message.Message):
-    __slots__ = ("channel", "content")
-    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("content",)
     CONTENT_FIELD_NUMBER: _ClassVar[int]
-    channel: str
     content: str
-    def __init__(self, channel: _Optional[str] = ..., content: _Optional[str] = ...) -> None: ...
+    def __init__(self, content: _Optional[str] = ...) -> None: ...
 
-class MessageList(_message.Message):
-    __slots__ = ("messages",)
+class ChannelsList(_message.Message):
+    __slots__ = ("channels",)
+    CHANNELS_FIELD_NUMBER: _ClassVar[int]
+    channels: _containers.RepeatedCompositeFieldContainer[Channel]
+    def __init__(self, channels: _Optional[_Iterable[_Union[Channel, _Mapping]]] = ...) -> None: ...
+
+class Channel(_message.Message):
+    __slots__ = ("name", "type", "messages")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     MESSAGES_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    type: ChannelType
     messages: _containers.RepeatedCompositeFieldContainer[Message]
-    def __init__(self, messages: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ..., messages: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
