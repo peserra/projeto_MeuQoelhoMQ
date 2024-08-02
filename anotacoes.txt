@@ -1,0 +1,14 @@
+Existem produtores e consumidores de mensagem
+
+produtores -> colocam mensagens em canais especificos
+consumidores -> assinam esses canais para pegar essas mensagens
+
+O que o server tem que fazer:
+- Criar canais identificadas por nome
+- Remover canais identificados por nome
+- Listar canais com seu tipo e numero de mensagens pendentes para entrega
+- publicar novas mensagens em uma fila especificada pelo seu nome (texto ou bytes)
+- assinar canais
+- salvar as mensagens em disco
+
+

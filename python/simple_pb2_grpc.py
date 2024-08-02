@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class MQ_stuffStub(object):
+class MessageManagerStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -39,43 +39,123 @@ class MQ_stuffStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CriaCanal = channel.unary_unary(
-                '/teste_grpc.MQ_stuff/CriaCanal',
-                request_serializer=simple__pb2.RequestOpening.SerializeToString,
-                response_deserializer=simple__pb2.StatusOpening.FromString,
+        self.CreateChannel = channel.unary_unary(
+                '/teste_grpc.MessageManager/CreateChannel',
+                request_serializer=simple__pb2.CreateChannelRequest.SerializeToString,
+                response_deserializer=simple__pb2.CreateChannelResponse.FromString,
+                _registered_method=True)
+        self.RemoveChannel = channel.unary_unary(
+                '/teste_grpc.MessageManager/RemoveChannel',
+                request_serializer=simple__pb2.RemoveChannelRequest.SerializeToString,
+                response_deserializer=simple__pb2.RemoveChannelResponse.FromString,
+                _registered_method=True)
+        self.ListChannels = channel.unary_unary(
+                '/teste_grpc.MessageManager/ListChannels',
+                request_serializer=simple__pb2.ListChannelsRequest.SerializeToString,
+                response_deserializer=simple__pb2.ListChannelsResponse.FromString,
+                _registered_method=True)
+        self.PublishMessage = channel.unary_unary(
+                '/teste_grpc.MessageManager/PublishMessage',
+                request_serializer=simple__pb2.PublishMessageRequest.SerializeToString,
+                response_deserializer=simple__pb2.PublishMessageResponse.FromString,
+                _registered_method=True)
+        self.SubscribeChannel = channel.unary_stream(
+                '/teste_grpc.MessageManager/SubscribeChannel',
+                request_serializer=simple__pb2.SubscribeChannelRequest.SerializeToString,
+                response_deserializer=simple__pb2.Message.FromString,
+                _registered_method=True)
+        self.ReceiveMessage = channel.unary_unary(
+                '/teste_grpc.MessageManager/ReceiveMessage',
+                request_serializer=simple__pb2.ReceiveMessageRequest.SerializeToString,
+                response_deserializer=simple__pb2.Message.FromString,
                 _registered_method=True)
 
 
-class MQ_stuffServicer(object):
+class MessageManagerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CriaCanal(self, request, context):
+    def CreateChannel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveChannel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListChannels(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PublishMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SubscribeChannel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReceiveMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_MQ_stuffServicer_to_server(servicer, server):
+def add_MessageManagerServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CriaCanal': grpc.unary_unary_rpc_method_handler(
-                    servicer.CriaCanal,
-                    request_deserializer=simple__pb2.RequestOpening.FromString,
-                    response_serializer=simple__pb2.StatusOpening.SerializeToString,
+            'CreateChannel': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateChannel,
+                    request_deserializer=simple__pb2.CreateChannelRequest.FromString,
+                    response_serializer=simple__pb2.CreateChannelResponse.SerializeToString,
+            ),
+            'RemoveChannel': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveChannel,
+                    request_deserializer=simple__pb2.RemoveChannelRequest.FromString,
+                    response_serializer=simple__pb2.RemoveChannelResponse.SerializeToString,
+            ),
+            'ListChannels': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListChannels,
+                    request_deserializer=simple__pb2.ListChannelsRequest.FromString,
+                    response_serializer=simple__pb2.ListChannelsResponse.SerializeToString,
+            ),
+            'PublishMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.PublishMessage,
+                    request_deserializer=simple__pb2.PublishMessageRequest.FromString,
+                    response_serializer=simple__pb2.PublishMessageResponse.SerializeToString,
+            ),
+            'SubscribeChannel': grpc.unary_stream_rpc_method_handler(
+                    servicer.SubscribeChannel,
+                    request_deserializer=simple__pb2.SubscribeChannelRequest.FromString,
+                    response_serializer=simple__pb2.Message.SerializeToString,
+            ),
+            'ReceiveMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReceiveMessage,
+                    request_deserializer=simple__pb2.ReceiveMessageRequest.FromString,
+                    response_serializer=simple__pb2.Message.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'teste_grpc.MQ_stuff', rpc_method_handlers)
+            'teste_grpc.MessageManager', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('teste_grpc.MQ_stuff', rpc_method_handlers)
+    server.add_registered_method_handlers('teste_grpc.MessageManager', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class MQ_stuff(object):
+class MessageManager(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CriaCanal(request,
+    def CreateChannel(request,
             target,
             options=(),
             channel_credentials=None,
@@ -88,9 +168,144 @@ class MQ_stuff(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/teste_grpc.MQ_stuff/CriaCanal',
-            simple__pb2.RequestOpening.SerializeToString,
-            simple__pb2.StatusOpening.FromString,
+            '/teste_grpc.MessageManager/CreateChannel',
+            simple__pb2.CreateChannelRequest.SerializeToString,
+            simple__pb2.CreateChannelResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RemoveChannel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/RemoveChannel',
+            simple__pb2.RemoveChannelRequest.SerializeToString,
+            simple__pb2.RemoveChannelResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListChannels(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/ListChannels',
+            simple__pb2.ListChannelsRequest.SerializeToString,
+            simple__pb2.ListChannelsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PublishMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/PublishMessage',
+            simple__pb2.PublishMessageRequest.SerializeToString,
+            simple__pb2.PublishMessageResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SubscribeChannel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/teste_grpc.MessageManager/SubscribeChannel',
+            simple__pb2.SubscribeChannelRequest.SerializeToString,
+            simple__pb2.Message.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReceiveMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/ReceiveMessage',
+            simple__pb2.ReceiveMessageRequest.SerializeToString,
+            simple__pb2.Message.FromString,
             options,
             channel_credentials,
             insecure,

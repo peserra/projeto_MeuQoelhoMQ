@@ -2,15 +2,84 @@ syntax = "proto3";
 
 package teste_grpc;
 
-service MQ_stuff {
-    rpc CriaCanal (RequestOpening) returns (StatusOpening) {}
+service MessageManager {
+    rpc CreateChannel(CreateChannelRequest) returns (CreateChannelResponse);
+    rpc RemoveChannel(RemoveChannelRequest) returns (RemoveChannelResponse);
+    rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse);
+    rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
+    rpc SubscribeChannel(SubscribeChannelRequest) returns (stream Message);
+    rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
+
 }
 
-message RequestOpening {
-    int32 client_id = 1;
-    string client_name = 2;
+message CreateChannelRequest {
+    string name = 1;
+    ChannelType type = 2;
 }
 
-message StatusOpening {
-    string mess = 1;
+message CreateChannelResponse {
+    bool success = 1;
+    
+    // sucesso ou falha
+    string operation_status_message = 2; 
+}
+
+message RemoveChannelRequest {
+    string name = 1;
+}
+
+message RemoveChannelResponse {
+    bool success = 1;
+    // sucesso ou falha
+    string operation_status_message = 2; 
+}
+
+// retorno de lista de canais abertos
+message ListChannelsRequest {}
+
+message ListChannelsResponse {
+    repeated ChannelInfo channels = 1;
+}
+
+message ChannelInfo {
+    string name = 1;
+    ChannelType type = 2;
+    int32 pendingMessages = 3;
+}
+
+message PublishMessageRequest {
+    string channel = 1;
+    bytes content = 2;
+}
+
+message PublishMessageResponse {
+    bool success = 1;
+    // sucesso ou falha
+    string operation_status_message = 2; 
+}
+
+message SubscribeChannelRequest {
+    string channel = 1;
+    int32 timeout = 2; // in seconds
+}
+
+message ReceiveMessageRequest {
+    string channel = 1;
+    int32 timeout = 2; // in seconds
+}
+
+message Message {
+    string channel = 1;
+    string content = 2;
+}
+
+enum ChannelType {
+    SIMPLE = 0;
+    MULTIPLE = 1;
+}
+
+// salvar mensagens para persistencia de dados nas listas
+
+message MessageList {
+    repeated Message messages = 1;
 }
