@@ -9,10 +9,9 @@ class Channel:
         self.name = name
         self.type = type
         self.messages = []
-
     def __repr__(self) -> str:
-        return f"Name: {self.name} \nType: {self.type} \nMessages: {len(self.messages)} "
-        
+        return f"nome: {self.name} tipo: {self.type} mensagens: {self.messages}"
+
 
 class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
     def __init__(self) -> None:
@@ -24,36 +23,39 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
                 case 0: self.SaveChannelsOnFile(self.channels_path)
                 case _: self.LoadChannelsOnFile(self.channels_path)
 
-    # funcao com falhas -> mapear tipos Channel python para tipos proto
+    # salva os canais no arquivo channels_list.txt
     def SaveChannelsOnFile(self, file_path):
         channel_list = simple_pb2.ChannelsList()
-        channel_list.channels.extend(self.channels)
+        grpc_channels = [simple_pb2.Channel(name=channel.name, 
+                                            type=channel.type, 
+                                            messages=channel.messages) 
+                                            for channel in self.channels]
+        channel_list.channels.extend(grpc_channels)
         with open(file_path, 'wb') as f:
             f.write(channel_list.SerializeToString())
 
+    # carrega os canais do arquivo channels_list.txt
     def LoadChannelsOnFile(self, file_path):
-        channels_list = simple_pb2.ChannelsList()
+        grpc_channels_list = simple_pb2.ChannelsList()
         with open(file_path, 'rb') as f: 
-            channels_list.ParseFromString(f.read())
-
-        self.channels = channels_list.channels 
+            grpc_channels_list.ParseFromString(f.read())
+        
+        self.channels = [Channel(name=c.name, type=c.type) for c in grpc_channels_list.channels]
+        for i, c in enumerate(grpc_channels_list.channels):
+            self.channels[i].messages = list(c.messages)
     
-    def Ping(self, request, context):
-        no_param = simple_pb2.noParam(conteudo = "bbbbbb", type=simple_pb2.SIMPLE)
-        print(f"recebido {request.conteudo} e {request.type}")
-        return no_param
     
     def CreateChannel(self, request, context):
-        channel = Channel(name=request.conteudo, type=request.type)
+        channel = Channel(name=request.name, type=request.type)
         self.channels.append(channel)
-        f = open(f"{request.conteudo}.txt", 'w')
+        f = open(f"{request.name}.txt", 'w')
         f.close()
         
         server_response = simple_pb2.CreateChannelResponse(
             success=True,
             operation_status_message= f"canal '{self.channels[0].name}' criado!"
         )
-        #self.SaveChannelsOnFile(self.channels_path)
+        self.SaveChannelsOnFile(self.channels_path)
         return server_response
     
     def RemoveChannel(self, request, context):

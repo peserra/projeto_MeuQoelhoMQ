@@ -12,10 +12,7 @@ service MessageManager {
     //rpc Ping(noParam) returns (noParam);
 
 }
-message noParam{
-    string conteudo = 1;
-    ChannelType type = 2;
-}
+message noParam{}
 
 message CreateChannelRequest {
     string name = 1;

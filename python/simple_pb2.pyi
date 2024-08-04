@@ -122,5 +122,5 @@ class Channel(_message.Message):
     MESSAGES_FIELD_NUMBER: _ClassVar[int]
     name: str
     type: ChannelType
-    messages: _containers.RepeatedCompositeFieldContainer[Message]
-    def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ..., messages: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
+    messages: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ..., messages: _Optional[_Iterable[str]] = ...) -> None: ...
