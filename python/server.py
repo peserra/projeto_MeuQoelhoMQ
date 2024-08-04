@@ -10,12 +10,13 @@ class Channel:
         self.type = type
         self.messages = []
     def __repr__(self) -> str:
-        return f"nome: {self.name} tipo: {self.type} mensagens: {self.messages}"
+        return f"nome: {self.name} tipo: {self.type} mensagens pendentes: {len(self.messages)}"
 
 
 class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
     def __init__(self) -> None:
         self.channels = []
+        self.channels_names = []
         self.channels_path = "channels_list.txt"
         with open(self.channels_path, '+ab') as f:
             file_path = os.path.abspath(f.name)
@@ -43,26 +44,44 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
         self.channels = [Channel(name=c.name, type=c.type) for c in grpc_channels_list.channels]
         for i, c in enumerate(grpc_channels_list.channels):
             self.channels[i].messages = list(c.messages)
-    
+            self.channels_names.append(c.name)
     
     def CreateChannel(self, request, context):
-        channel = Channel(name=request.name, type=request.type)
+        channel = Channel(name=request.name, type=simple_pb2.ChannelType(request.type))
         self.channels.append(channel)
-        f = open(f"{request.name}.txt", 'w')
-        f.close()
+
+        # lookup table para os nomes dos canais
+        self.channels_names.append(channel.name)
         
+        self.SaveChannelsOnFile(self.channels_path)
         server_response = simple_pb2.CreateChannelResponse(
             success=True,
-            operation_status_message= f"canal '{self.channels[0].name}' criado!"
+            operation_status_message= f"canal '{str(request.name)}' criado!"
         )
-        self.SaveChannelsOnFile(self.channels_path)
         return server_response
     
     def RemoveChannel(self, request, context):
-        return super().RemoveChannel(request, context)
+        self.channels.pop(self.channels_names.index(request.name))
+        self.channels_names.remove(request.name)
+        self.SaveChannelsOnFile(self.channels_path)
+        
+        server_response = simple_pb2.RemoveChannelResponse(
+            success=True,
+            operation_status_message= f"canal '{request.name}' removido!"
+        )
+        return server_response
     
     def ListChannels(self, request, context):
-        return super().ListChannels(request, context)
+        channel_response = [simple_pb2.ChannelInfo(
+                            name=channel.name,
+                            type=channel.type,
+                            pendingMessages=len(channel.messages))
+                            for channel in self.channels]
+        print(channel_response[0].type)
+        server_response = simple_pb2.ListChannelsResponse(
+          channels = channel_response 
+        )
+        return server_response
         
     def SubscribeChannel(self, request, context):
         return super().SubscribeChannel(request, context)

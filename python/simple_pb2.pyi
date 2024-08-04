@@ -14,12 +14,8 @@ SIMPLE: ChannelType
 MULTIPLE: ChannelType
 
 class noParam(_message.Message):
-    __slots__ = ("conteudo", "type")
-    CONTEUDO_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    conteudo: str
-    type: ChannelType
-    def __init__(self, conteudo: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ...) -> None: ...
+    __slots__ = ()
+    def __init__(self) -> None: ...
 
 class CreateChannelRequest(_message.Message):
     __slots__ = ("name", "type")

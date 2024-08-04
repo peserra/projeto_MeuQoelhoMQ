@@ -14,45 +14,45 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csimple.proto\x12\nteste_grpc\"B\n\x07noParam\x12\x10\n\x08\x63onteudo\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\"K\n\x14\x43reateChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\"J\n\x15\x43reateChannelResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\"$\n\x14RemoveChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"J\n\x15RemoveChannelResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\"\x15\n\x13ListChannelsRequest\"A\n\x14ListChannelsResponse\x12)\n\x08\x63hannels\x18\x01 \x03(\x0b\x32\x17.teste_grpc.ChannelInfo\"[\n\x0b\x43hannelInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\x12\x17\n\x0fpendingMessages\x18\x03 \x01(\x05\"9\n\x15PublishMessageRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\"K\n\x16PublishMessageResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\";\n\x17SubscribeChannelRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07timeout\x18\x02 \x01(\x05\"9\n\x15ReceiveMessageRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07timeout\x18\x02 \x01(\x05\"\x1a\n\x07Message\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\"5\n\x0c\x43hannelsList\x12%\n\x08\x63hannels\x18\x01 \x03(\x0b\x32\x13.teste_grpc.Channel\"P\n\x07\x43hannel\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\x12\x10\n\x08messages\x18\x03 \x03(\t*\'\n\x0b\x43hannelType\x12\n\n\x06SIMPLE\x10\x00\x12\x0c\n\x08MULTIPLE\x10\x01\x32\x82\x04\n\x0eMessageManager\x12T\n\rCreateChannel\x12 .teste_grpc.CreateChannelRequest\x1a!.teste_grpc.CreateChannelResponse\x12T\n\rRemoveChannel\x12 .teste_grpc.RemoveChannelRequest\x1a!.teste_grpc.RemoveChannelResponse\x12Q\n\x0cListChannels\x12\x1f.teste_grpc.ListChannelsRequest\x1a .teste_grpc.ListChannelsResponse\x12W\n\x0ePublishMessage\x12!.teste_grpc.PublishMessageRequest\x1a\".teste_grpc.PublishMessageResponse\x12N\n\x10SubscribeChannel\x12#.teste_grpc.SubscribeChannelRequest\x1a\x13.teste_grpc.Message0\x01\x12H\n\x0eReceiveMessage\x12!.teste_grpc.ReceiveMessageRequest\x1a\x13.teste_grpc.Messageb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csimple.proto\x12\nteste_grpc\"\t\n\x07noParam\"K\n\x14\x43reateChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\"J\n\x15\x43reateChannelResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\"$\n\x14RemoveChannelRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"J\n\x15RemoveChannelResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\"\x15\n\x13ListChannelsRequest\"A\n\x14ListChannelsResponse\x12)\n\x08\x63hannels\x18\x01 \x03(\x0b\x32\x17.teste_grpc.ChannelInfo\"[\n\x0b\x43hannelInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\x12\x17\n\x0fpendingMessages\x18\x03 \x01(\x05\"9\n\x15PublishMessageRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\x0c\"K\n\x16PublishMessageResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12 \n\x18operation_status_message\x18\x02 \x01(\t\";\n\x17SubscribeChannelRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07timeout\x18\x02 \x01(\x05\"9\n\x15ReceiveMessageRequest\x12\x0f\n\x07\x63hannel\x18\x01 \x01(\t\x12\x0f\n\x07timeout\x18\x02 \x01(\x05\"\x1a\n\x07Message\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\"5\n\x0c\x43hannelsList\x12%\n\x08\x63hannels\x18\x01 \x03(\x0b\x32\x13.teste_grpc.Channel\"P\n\x07\x43hannel\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0e\x32\x17.teste_grpc.ChannelType\x12\x10\n\x08messages\x18\x03 \x03(\t*\'\n\x0b\x43hannelType\x12\n\n\x06SIMPLE\x10\x00\x12\x0c\n\x08MULTIPLE\x10\x01\x32\x82\x04\n\x0eMessageManager\x12T\n\rCreateChannel\x12 .teste_grpc.CreateChannelRequest\x1a!.teste_grpc.CreateChannelResponse\x12T\n\rRemoveChannel\x12 .teste_grpc.RemoveChannelRequest\x1a!.teste_grpc.RemoveChannelResponse\x12Q\n\x0cListChannels\x12\x1f.teste_grpc.ListChannelsRequest\x1a .teste_grpc.ListChannelsResponse\x12W\n\x0ePublishMessage\x12!.teste_grpc.PublishMessageRequest\x1a\".teste_grpc.PublishMessageResponse\x12N\n\x10SubscribeChannel\x12#.teste_grpc.SubscribeChannelRequest\x1a\x13.teste_grpc.Message0\x01\x12H\n\x0eReceiveMessage\x12!.teste_grpc.ReceiveMessageRequest\x1a\x13.teste_grpc.Messageb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'simple_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_CHANNELTYPE']._serialized_start=967
-  _globals['_CHANNELTYPE']._serialized_end=1006
+  _globals['_CHANNELTYPE']._serialized_start=910
+  _globals['_CHANNELTYPE']._serialized_end=949
   _globals['_NOPARAM']._serialized_start=28
-  _globals['_NOPARAM']._serialized_end=94
-  _globals['_CREATECHANNELREQUEST']._serialized_start=96
-  _globals['_CREATECHANNELREQUEST']._serialized_end=171
-  _globals['_CREATECHANNELRESPONSE']._serialized_start=173
-  _globals['_CREATECHANNELRESPONSE']._serialized_end=247
-  _globals['_REMOVECHANNELREQUEST']._serialized_start=249
-  _globals['_REMOVECHANNELREQUEST']._serialized_end=285
-  _globals['_REMOVECHANNELRESPONSE']._serialized_start=287
-  _globals['_REMOVECHANNELRESPONSE']._serialized_end=361
-  _globals['_LISTCHANNELSREQUEST']._serialized_start=363
-  _globals['_LISTCHANNELSREQUEST']._serialized_end=384
-  _globals['_LISTCHANNELSRESPONSE']._serialized_start=386
-  _globals['_LISTCHANNELSRESPONSE']._serialized_end=451
-  _globals['_CHANNELINFO']._serialized_start=453
-  _globals['_CHANNELINFO']._serialized_end=544
-  _globals['_PUBLISHMESSAGEREQUEST']._serialized_start=546
-  _globals['_PUBLISHMESSAGEREQUEST']._serialized_end=603
-  _globals['_PUBLISHMESSAGERESPONSE']._serialized_start=605
-  _globals['_PUBLISHMESSAGERESPONSE']._serialized_end=680
-  _globals['_SUBSCRIBECHANNELREQUEST']._serialized_start=682
-  _globals['_SUBSCRIBECHANNELREQUEST']._serialized_end=741
-  _globals['_RECEIVEMESSAGEREQUEST']._serialized_start=743
-  _globals['_RECEIVEMESSAGEREQUEST']._serialized_end=800
-  _globals['_MESSAGE']._serialized_start=802
-  _globals['_MESSAGE']._serialized_end=828
-  _globals['_CHANNELSLIST']._serialized_start=830
-  _globals['_CHANNELSLIST']._serialized_end=883
-  _globals['_CHANNEL']._serialized_start=885
-  _globals['_CHANNEL']._serialized_end=965
-  _globals['_MESSAGEMANAGER']._serialized_start=1009
-  _globals['_MESSAGEMANAGER']._serialized_end=1523
+  _globals['_NOPARAM']._serialized_end=37
+  _globals['_CREATECHANNELREQUEST']._serialized_start=39
+  _globals['_CREATECHANNELREQUEST']._serialized_end=114
+  _globals['_CREATECHANNELRESPONSE']._serialized_start=116
+  _globals['_CREATECHANNELRESPONSE']._serialized_end=190
+  _globals['_REMOVECHANNELREQUEST']._serialized_start=192
+  _globals['_REMOVECHANNELREQUEST']._serialized_end=228
+  _globals['_REMOVECHANNELRESPONSE']._serialized_start=230
+  _globals['_REMOVECHANNELRESPONSE']._serialized_end=304
+  _globals['_LISTCHANNELSREQUEST']._serialized_start=306
+  _globals['_LISTCHANNELSREQUEST']._serialized_end=327
+  _globals['_LISTCHANNELSRESPONSE']._serialized_start=329
+  _globals['_LISTCHANNELSRESPONSE']._serialized_end=394
+  _globals['_CHANNELINFO']._serialized_start=396
+  _globals['_CHANNELINFO']._serialized_end=487
+  _globals['_PUBLISHMESSAGEREQUEST']._serialized_start=489
+  _globals['_PUBLISHMESSAGEREQUEST']._serialized_end=546
+  _globals['_PUBLISHMESSAGERESPONSE']._serialized_start=548
+  _globals['_PUBLISHMESSAGERESPONSE']._serialized_end=623
+  _globals['_SUBSCRIBECHANNELREQUEST']._serialized_start=625
+  _globals['_SUBSCRIBECHANNELREQUEST']._serialized_end=684
+  _globals['_RECEIVEMESSAGEREQUEST']._serialized_start=686
+  _globals['_RECEIVEMESSAGEREQUEST']._serialized_end=743
+  _globals['_MESSAGE']._serialized_start=745
+  _globals['_MESSAGE']._serialized_end=771
+  _globals['_CHANNELSLIST']._serialized_start=773
+  _globals['_CHANNELSLIST']._serialized_end=826
+  _globals['_CHANNEL']._serialized_start=828
+  _globals['_CHANNEL']._serialized_end=908
+  _globals['_MESSAGEMANAGER']._serialized_start=952
+  _globals['_MESSAGEMANAGER']._serialized_end=1466
 # @@protoc_insertion_point(module_scope)
