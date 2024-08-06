@@ -47,30 +47,44 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
             self.channels_names.append(c.name)
     
     def CreateChannel(self, request, context):
-        channel = Channel(name=request.name, type=simple_pb2.ChannelType(request.type))
-        self.channels.append(channel)
+        if request.name in self.channels_names:
+            server_response = simple_pb2.CreateChannelResponse(
+            success = False,
+            operation_status_message = f"canal com nome '{request.name}' já existe."
+            )
+            return server_response
 
+        channel = Channel(name=request.name, type=request.type)
+        self.channels.append(channel)
         # lookup table para os nomes dos canais
         self.channels_names.append(channel.name)
         
         self.SaveChannelsOnFile(self.channels_path)
         server_response = simple_pb2.CreateChannelResponse(
-            success=True,
-            operation_status_message= f"canal '{str(request.name)}' criado!"
+            success = True,
+            operation_status_message = f"canal '{request.name}' criado!"
         )
         return server_response
     
     def RemoveChannel(self, request, context):
-        self.channels.pop(self.channels_names.index(request.name))
-        self.channels_names.remove(request.name)
-        self.SaveChannelsOnFile(self.channels_path)
-        
-        server_response = simple_pb2.RemoveChannelResponse(
-            success=True,
-            operation_status_message= f"canal '{request.name}' removido!"
-        )
+        try: 
+            self.channels.pop(self.channels_names.index(request.name))
+            self.channels_names.remove(request.name)
+            self.SaveChannelsOnFile(self.channels_path)
+            
+            server_response = simple_pb2.RemoveChannelResponse(
+                success=True,
+                operation_status_message= f"canal '{request.name}' removido!"
+            )
+        except(ValueError) as e:
+            server_response = simple_pb2.RemoveChannelResponse(
+                success=False,
+                operation_status_message= f"canal '{request.name}' não encontrado."
+            )
+             
         return server_response
     
+    # por algum motivo, o tipo do canal nao eh mandado
     def ListChannels(self, request, context):
         channel_response = [simple_pb2.ChannelInfo(
                             name=channel.name,
