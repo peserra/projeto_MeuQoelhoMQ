@@ -6,18 +6,18 @@ import os
 
 class Channel:
     def __init__(self, name, type) -> None:
-        self.name = name
-        self.type = type
-        self.messages = []
+        self.name:str = name
+        self.type:simple_pb2.ChannelType = type
+        self.messages:list = []
     def __repr__(self) -> str:
         return f"nome: {self.name} tipo: {self.type} mensagens pendentes: {len(self.messages)}"
 
 
 class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
     def __init__(self) -> None:
-        self.channels = []
-        self.channels_names = []
-        self.channels_path = "channels_list.txt"
+        self.channels:list = []
+        self.channels_names:list = []
+        self.channels_path:str = "channels_list.txt"
         with open(self.channels_path, '+ab') as f:
             file_path = os.path.abspath(f.name)
             match os.path.getsize(self.channels_path):
@@ -25,28 +25,28 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
                 case _: self.LoadChannelsOnFile(self.channels_path)
 
     # salva os canais no arquivo channels_list.txt
-    def SaveChannelsOnFile(self, file_path):
-        channel_list = simple_pb2.ChannelsList()
-        grpc_channels = [simple_pb2.Channel(name=channel.name, 
+    def SaveChannelsOnFile(self, file_path) -> None:
+        channel_list:list = simple_pb2.ChannelsList()
+        grpc_channels:list = [simple_pb2.Channel(name=channel.name, 
                                             type=channel.type, 
                                             messages=channel.messages) 
                                             for channel in self.channels]
         channel_list.channels.extend(grpc_channels)
-        with open(file_path, 'wb') as f:
-            f.write(channel_list.SerializeToString())
+        with open(file_path, 'wb') as file:
+            file.write(channel_list.SerializeToString())
 
     # carrega os canais do arquivo channels_list.txt
-    def LoadChannelsOnFile(self, file_path):
-        grpc_channels_list = simple_pb2.ChannelsList()
-        with open(file_path, 'rb') as f: 
-            grpc_channels_list.ParseFromString(f.read())
+    def LoadChannelsOnFile(self, file_path) -> None:
+        grpc_channels_list:list = simple_pb2.ChannelsList()
+        with open(file_path, 'rb') as file: 
+            grpc_channels_list.ParseFromString(file.read())
         
         self.channels = [Channel(name=c.name, type=c.type) for c in grpc_channels_list.channels]
         for i, c in enumerate(grpc_channels_list.channels):
             self.channels[i].messages = list(c.messages)
             self.channels_names.append(c.name)
     
-    def CreateChannel(self, request, context):
+    def CreateChannel(self, request, context) -> simple_pb2.CreateChannelResponse:
         if request.name in self.channels_names:
             server_response = simple_pb2.CreateChannelResponse(
             success = False,
@@ -66,7 +66,7 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
         )
         return server_response
     
-    def RemoveChannel(self, request, context):
+    def RemoveChannel(self, request, context) -> simple_pb2.RemoveChannelResponse:
         try: 
             self.channels.pop(self.channels_names.index(request.name))
             self.channels_names.remove(request.name)
