@@ -6,9 +6,9 @@ service MessageManager {
     rpc CreateChannel(CreateChannelRequest) returns (CreateChannelResponse);
     rpc RemoveChannel(RemoveChannelRequest) returns (RemoveChannelResponse);
     rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse);
-    rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
     rpc SubscribeChannelUnary(SubscribeChannelRequest) returns (Message);
     rpc SubscribeChannelStream(SubscribeChannelRequest) returns (stream Message);
+    rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
     rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
     //rpc Ping(noParam) returns (noParam);
 
@@ -51,7 +51,7 @@ message ChannelInfo {
 
 message PublishMessageRequest {
     string channel = 1;
-    bytes content = 2;
+    repeated Message messageList = 2;
 }
 
 message PublishMessageResponse {
