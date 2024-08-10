@@ -47,13 +47,13 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
             self.channels_names.append(c.name)
     
     def CreateChannel(self, request, context) -> simple_pb2.CreateChannelResponse:
+        print (request.name, request.type)
         if request.name in self.channels_names:
             server_response = simple_pb2.CreateChannelResponse(
             success = False,
             operation_status_message = f"canal com nome '{request.name}' já existe."
             )
             return server_response
-
         channel = Channel(name=request.name, type=request.type)
         self.channels.append(channel)
         # lookup table para os nomes dos canais
@@ -91,18 +91,36 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
                             type=channel.type,
                             pendingMessages=len(channel.messages))
                             for channel in self.channels]
-        print(channel_response[0].type)
+        #print(channel_response)
         server_response = simple_pb2.ListChannelsResponse(
           channels = channel_response 
         )
         return server_response
         
-    def SubscribeChannel(self, request, context):
-        return super().SubscribeChannel(request, context)
+        
+    '''
+        Clientes devem poder escolher entre Stream (ficar esperando ate chamada acabar)
+        ou unary, que faz uma chamada independente e retorna so uma mensagem
+
+        caso nao tenha mensagem disponivel, server deve dar a opção de um timout
+    '''
+    # cliente fica conectado ao canal, ate que todas as mensagens acabem
+    def SubscribeChannelStream(self, request, context):
+        return super().SubscribeChannelStream(request, context)
+    
+    # retorna apenas a mensagem no topo do canal
+    def SubscribeChannelUnary(self, request, context):
+        return super().SubscribeChannelUnary(request, context)
     
     def PublishMessage(self, request, context):
+        '''
+            A publicacao de mensagens deve ser feita de forma unaria, mas deve permitir
+            que o cliente publique uma unica mensagem ou uma lista de mensagens ao canal
+        '''
+        # Implementacao -> cliente manda uma lista de mensagens, contendo 1 ou n mensagens
         return super().PublishMessage(request, context)
     
+   
     def ReceiveMessage(self, request, context):
         return super().ReceiveMessage(request, context)
     

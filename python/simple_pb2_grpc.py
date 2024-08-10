@@ -5,7 +5,7 @@ import warnings
 
 import simple_pb2 as simple__pb2
 
-GRPC_GENERATED_VERSION = '1.65.4'
+GRPC_GENERATED_VERSION = '1.65.1'
 GRPC_VERSION = grpc.__version__
 EXPECTED_ERROR_RELEASE = '1.66.0'
 SCHEDULED_RELEASE_DATE = 'August 6, 2024'
@@ -59,8 +59,13 @@ class MessageManagerStub(object):
                 request_serializer=simple__pb2.PublishMessageRequest.SerializeToString,
                 response_deserializer=simple__pb2.PublishMessageResponse.FromString,
                 _registered_method=True)
-        self.SubscribeChannel = channel.unary_stream(
-                '/teste_grpc.MessageManager/SubscribeChannel',
+        self.SubscribeChannelUnary = channel.unary_unary(
+                '/teste_grpc.MessageManager/SubscribeChannelUnary',
+                request_serializer=simple__pb2.SubscribeChannelRequest.SerializeToString,
+                response_deserializer=simple__pb2.Message.FromString,
+                _registered_method=True)
+        self.SubscribeChannelStream = channel.unary_stream(
+                '/teste_grpc.MessageManager/SubscribeChannelStream',
                 request_serializer=simple__pb2.SubscribeChannelRequest.SerializeToString,
                 response_deserializer=simple__pb2.Message.FromString,
                 _registered_method=True)
@@ -98,7 +103,13 @@ class MessageManagerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SubscribeChannel(self, request, context):
+    def SubscribeChannelUnary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SubscribeChannelStream(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -134,8 +145,13 @@ def add_MessageManagerServicer_to_server(servicer, server):
                     request_deserializer=simple__pb2.PublishMessageRequest.FromString,
                     response_serializer=simple__pb2.PublishMessageResponse.SerializeToString,
             ),
-            'SubscribeChannel': grpc.unary_stream_rpc_method_handler(
-                    servicer.SubscribeChannel,
+            'SubscribeChannelUnary': grpc.unary_unary_rpc_method_handler(
+                    servicer.SubscribeChannelUnary,
+                    request_deserializer=simple__pb2.SubscribeChannelRequest.FromString,
+                    response_serializer=simple__pb2.Message.SerializeToString,
+            ),
+            'SubscribeChannelStream': grpc.unary_stream_rpc_method_handler(
+                    servicer.SubscribeChannelStream,
                     request_deserializer=simple__pb2.SubscribeChannelRequest.FromString,
                     response_serializer=simple__pb2.Message.SerializeToString,
             ),
@@ -264,7 +280,34 @@ class MessageManager(object):
             _registered_method=True)
 
     @staticmethod
-    def SubscribeChannel(request,
+    def SubscribeChannelUnary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/SubscribeChannelUnary',
+            simple__pb2.SubscribeChannelRequest.SerializeToString,
+            simple__pb2.Message.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SubscribeChannelStream(request,
             target,
             options=(),
             channel_credentials=None,
@@ -277,7 +320,7 @@ class MessageManager(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/teste_grpc.MessageManager/SubscribeChannel',
+            '/teste_grpc.MessageManager/SubscribeChannelStream',
             simple__pb2.SubscribeChannelRequest.SerializeToString,
             simple__pb2.Message.FromString,
             options,

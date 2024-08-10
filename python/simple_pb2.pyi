@@ -8,14 +8,12 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class ChannelType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
+    BUG: _ClassVar[ChannelType]
     SIMPLE: _ClassVar[ChannelType]
     MULTIPLE: _ClassVar[ChannelType]
+BUG: ChannelType
 SIMPLE: ChannelType
 MULTIPLE: ChannelType
-
-class noParam(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
 
 class CreateChannelRequest(_message.Message):
     __slots__ = ("name", "type")

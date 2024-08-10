@@ -7,12 +7,12 @@ service MessageManager {
     rpc RemoveChannel(RemoveChannelRequest) returns (RemoveChannelResponse);
     rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse);
     rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
-    rpc SubscribeChannel(SubscribeChannelRequest) returns (stream Message);
+    rpc SubscribeChannelUnary(SubscribeChannelRequest) returns (Message);
+    rpc SubscribeChannelStream(SubscribeChannelRequest) returns (stream Message);
     rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
     //rpc Ping(noParam) returns (noParam);
 
 }
-message noParam{}
 
 message CreateChannelRequest {
     string name = 1;
@@ -75,8 +75,9 @@ message Message {
 }
 
 enum ChannelType {
-    SIMPLE = 0;
-    MULTIPLE = 1;
+    BUG = 0; // nao use esse valor
+    SIMPLE = 1;
+    MULTIPLE = 2;
 }
 
 // salvar mensagens para persistencia de dados nas listas
