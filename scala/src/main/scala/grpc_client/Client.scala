@@ -1,4 +1,4 @@
-package grpc
+package grpc_client
 
 import io.grpc.{ManagedChannel, ManagedChannelBuilder}
 import teste_grpc.simple.{ChannelType, CreateChannelRequest, ListChannelsRequest, MessageManagerGrpc}
