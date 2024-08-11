@@ -66,12 +66,12 @@ class ChannelInfo(_message.Message):
     def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ..., pendingMessages: _Optional[int] = ...) -> None: ...
 
 class PublishMessageRequest(_message.Message):
-    __slots__ = ("channel", "message")
+    __slots__ = ("channel", "messageList")
     CHANNEL_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    MESSAGELIST_FIELD_NUMBER: _ClassVar[int]
     channel: str
-    message: _containers.RepeatedCompositeFieldContainer[Message]
-    def __init__(self, channel: _Optional[str] = ..., message: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
+    messageList: _containers.RepeatedCompositeFieldContainer[Message]
+    def __init__(self, channel: _Optional[str] = ..., messageList: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
 
 class PublishMessageResponse(_message.Message):
     __slots__ = ("success", "operation_status_message")

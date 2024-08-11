@@ -51,7 +51,7 @@ message ChannelInfo {
 
 message PublishMessageRequest {
     string channel = 1;
-    repeated Message message = 2;
+    repeated Message messageList = 2;
 }
 
 message PublishMessageResponse {

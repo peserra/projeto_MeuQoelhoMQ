@@ -18,10 +18,10 @@ def main():
             ))
         print(f"PublishMessage Response: {publish_response}")
 
-        # Chamada para SubscribeChannelUnary
-        subscribe_unary_response = client_stub.SubscribeChannelUnary(
-            simple_pb2.SubscribeChannelRequest(channel="canal3", timeout=10))
-        print(f"SubscribeChannelUnary Response: {subscribe_unary_response.content}")
+        # # Chamada para SubscribeChannelUnary
+        # subscribe_unary_response = client_stub.SubscribeChannelUnary(
+        #     simple_pb2.SubscribeChannelRequest(channel="canal3", timeout=10))
+        # print(f"SubscribeChannelUnary Response: {subscribe_unary_response.content}")
 
         # Chamada para SubscribeChannelStream
         print("SubscribeChannelStream Responses:")
@@ -30,11 +30,11 @@ def main():
         ):
             print(f"Message received: {message.content}")       
 
-        # Chamada para ReceiveMessage
-        receive_message_response = client_stub.ReceiveMessage(
-            simple_pb2.ReceiveMessageRequest(channel="canal3", timeout=10)
-        )
-        print(f"ReceiveMessage Response: {receive_message_response.content}")         
+        # # Chamada para ReceiveMessage
+        # receive_message_response = client_stub.ReceiveMessage(
+        #     simple_pb2.ReceiveMessageRequest(channel="canal3", timeout=10)
+        # )
+        # print(f"ReceiveMessage Response: {receive_message_response.content}")         
 
 if __name__ == "__main__":
     main()
