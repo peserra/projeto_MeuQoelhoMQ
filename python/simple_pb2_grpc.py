@@ -5,7 +5,7 @@ import warnings
 
 import simple_pb2 as simple__pb2
 
-GRPC_GENERATED_VERSION = '1.65.1'
+GRPC_GENERATED_VERSION = '1.65.4'
 GRPC_VERSION = grpc.__version__
 EXPECTED_ERROR_RELEASE = '1.66.0'
 SCHEDULED_RELEASE_DATE = 'August 6, 2024'
@@ -54,11 +54,6 @@ class MessageManagerStub(object):
                 request_serializer=simple__pb2.ListChannelsRequest.SerializeToString,
                 response_deserializer=simple__pb2.ListChannelsResponse.FromString,
                 _registered_method=True)
-        self.PublishMessage = channel.unary_unary(
-                '/teste_grpc.MessageManager/PublishMessage',
-                request_serializer=simple__pb2.PublishMessageRequest.SerializeToString,
-                response_deserializer=simple__pb2.PublishMessageResponse.FromString,
-                _registered_method=True)
         self.SubscribeChannelUnary = channel.unary_unary(
                 '/teste_grpc.MessageManager/SubscribeChannelUnary',
                 request_serializer=simple__pb2.SubscribeChannelRequest.SerializeToString,
@@ -68,6 +63,11 @@ class MessageManagerStub(object):
                 '/teste_grpc.MessageManager/SubscribeChannelStream',
                 request_serializer=simple__pb2.SubscribeChannelRequest.SerializeToString,
                 response_deserializer=simple__pb2.Message.FromString,
+                _registered_method=True)
+        self.PublishMessage = channel.unary_unary(
+                '/teste_grpc.MessageManager/PublishMessage',
+                request_serializer=simple__pb2.PublishMessageRequest.SerializeToString,
+                response_deserializer=simple__pb2.PublishMessageResponse.FromString,
                 _registered_method=True)
         self.ReceiveMessage = channel.unary_unary(
                 '/teste_grpc.MessageManager/ReceiveMessage',
@@ -97,12 +97,6 @@ class MessageManagerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PublishMessage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def SubscribeChannelUnary(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -110,6 +104,12 @@ class MessageManagerServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SubscribeChannelStream(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PublishMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -140,11 +140,6 @@ def add_MessageManagerServicer_to_server(servicer, server):
                     request_deserializer=simple__pb2.ListChannelsRequest.FromString,
                     response_serializer=simple__pb2.ListChannelsResponse.SerializeToString,
             ),
-            'PublishMessage': grpc.unary_unary_rpc_method_handler(
-                    servicer.PublishMessage,
-                    request_deserializer=simple__pb2.PublishMessageRequest.FromString,
-                    response_serializer=simple__pb2.PublishMessageResponse.SerializeToString,
-            ),
             'SubscribeChannelUnary': grpc.unary_unary_rpc_method_handler(
                     servicer.SubscribeChannelUnary,
                     request_deserializer=simple__pb2.SubscribeChannelRequest.FromString,
@@ -154,6 +149,11 @@ def add_MessageManagerServicer_to_server(servicer, server):
                     servicer.SubscribeChannelStream,
                     request_deserializer=simple__pb2.SubscribeChannelRequest.FromString,
                     response_serializer=simple__pb2.Message.SerializeToString,
+            ),
+            'PublishMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.PublishMessage,
+                    request_deserializer=simple__pb2.PublishMessageRequest.FromString,
+                    response_serializer=simple__pb2.PublishMessageResponse.SerializeToString,
             ),
             'ReceiveMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.ReceiveMessage,
@@ -253,33 +253,6 @@ class MessageManager(object):
             _registered_method=True)
 
     @staticmethod
-    def PublishMessage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/teste_grpc.MessageManager/PublishMessage',
-            simple__pb2.PublishMessageRequest.SerializeToString,
-            simple__pb2.PublishMessageResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def SubscribeChannelUnary(request,
             target,
             options=(),
@@ -323,6 +296,33 @@ class MessageManager(object):
             '/teste_grpc.MessageManager/SubscribeChannelStream',
             simple__pb2.SubscribeChannelRequest.SerializeToString,
             simple__pb2.Message.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PublishMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/teste_grpc.MessageManager/PublishMessage',
+            simple__pb2.PublishMessageRequest.SerializeToString,
+            simple__pb2.PublishMessageResponse.FromString,
             options,
             channel_credentials,
             insecure,

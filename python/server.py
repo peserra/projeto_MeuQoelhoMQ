@@ -106,25 +106,65 @@ class MessagerieManager(simple_pb2_grpc.MessageManagerServicer):
     '''
     # cliente fica conectado ao canal, ate que todas as mensagens acabem
     def SubscribeChannelStream(self, request, context):
-        return super().SubscribeChannelStream(request, context)
-    
+        channel_name = request.channel
+        for channel in self.channels:
+            if channel.name == channel_name:
+                for message in channel.messages:
+                    yield simple_pb2.Message(content=message)
+                return
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details('Canal não encontrado.')
+
     # retorna apenas a mensagem no topo do canal
     def SubscribeChannelUnary(self, request, context):
-        return super().SubscribeChannelUnary(request, context)
+        channel_name = request.channel
+        for channel in self.channels:
+            if channel.name == channel_name:
+                if channel.messages:
+                    return simple_pb2.Message(content=channel.messages[0])
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details('Nenhuma mensagem disponível no canal.')
+                return simple_pb2.Message()
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details('Canal não encontrado.')
+        return simple_pb2.Message()
     
     def PublishMessage(self, request, context):
-        '''
-            A publicacao de mensagens deve ser feita de forma unaria, mas deve permitir
-            que o cliente publique uma unica mensagem ou uma lista de mensagens ao canal
-        '''
-        # Implementacao -> cliente manda uma lista de mensagens, contendo 1 ou n mensagens
-        return super().PublishMessage(request, context)
-    
+        channel_name = request.channel
+        messages = [msg.content for msg in request.messageList]
+        
+        for channel in self.channels:
+            if channel.name == channel_name:
+                channel.messages.extend(messages)
+                self.SaveChannelsOnFile(self.channels_path)
+                return simple_pb2.PublishMessageResponse(
+                    success=True,
+                    operation_status_message=f"Mensagens publicadas no canal '{channel_name}'."
+                )
+        
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details('Canal não encontrado.')
+        return simple_pb2.PublishMessageResponse(
+            success=False,
+            operation_status_message=f"Falha ao publicar mensagens no canal '{channel_name}'."
+        )
    
     def ReceiveMessage(self, request, context):
-        return super().ReceiveMessage(request, context)
-    
-
+        channel_name = request.channel
+        
+        for channel in self.channels:
+            if channel.name == channel_name:
+                if channel.messages:
+                    message = channel.messages.pop(0)
+                    self.SaveChannelsOnFile(self.channels_path)
+                    return simple_pb2.Message(content=message)
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details('Nenhuma mensagem disponível no canal.')
+                return simple_pb2.Message()
+        
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details('Canal não encontrado.')
+        return simple_pb2.Message()
 
 
 def main():
