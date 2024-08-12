@@ -1,8 +1,9 @@
 package grpc_client
 
 import io.grpc.{ManagedChannel, ManagedChannelBuilder}
-import teste_grpc.simple.{ChannelType, CreateChannelRequest, ListChannelsRequest, MessageManagerGrpc}
+import teste_grpc.simple.{ChannelType, CreateChannelRequest, CreateChannelResponse, ListChannelsRequest, MessageManagerGrpc}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import teste_grpc.simple.MessageManagerGrpc.MessageManagerStub
 
 object Client extends App {
@@ -11,7 +12,8 @@ object Client extends App {
 
     val createChannelRequest: CreateChannelRequest = CreateChannelRequest("canal1", ChannelType.SIMPLE)
     val listChannelsRequest: ListChannelsRequest = ListChannelsRequest()
-    stub.createChannel(createChannelRequest)
+    val createChannelResponse: Future[CreateChannelResponse] = stub.createChannel(createChannelRequest)
+    println(s"channel created: ${createChannelResponse.toString}")
 
     stub.listChannels(listChannelsRequest).foreach(println)
   }
