@@ -66,12 +66,12 @@ class ChannelInfo(_message.Message):
     def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[ChannelType, str]] = ..., pendingMessages: _Optional[int] = ...) -> None: ...
 
 class PublishMessageRequest(_message.Message):
-    __slots__ = ("channel", "content")
+    __slots__ = ("channel", "messageList")
     CHANNEL_FIELD_NUMBER: _ClassVar[int]
-    CONTENT_FIELD_NUMBER: _ClassVar[int]
+    MESSAGELIST_FIELD_NUMBER: _ClassVar[int]
     channel: str
-    content: bytes
-    def __init__(self, channel: _Optional[str] = ..., content: _Optional[bytes] = ...) -> None: ...
+    messageList: _containers.RepeatedCompositeFieldContainer[Message]
+    def __init__(self, channel: _Optional[str] = ..., messageList: _Optional[_Iterable[_Union[Message, _Mapping]]] = ...) -> None: ...
 
 class PublishMessageResponse(_message.Message):
     __slots__ = ("success", "operation_status_message")
@@ -82,20 +82,28 @@ class PublishMessageResponse(_message.Message):
     def __init__(self, success: bool = ..., operation_status_message: _Optional[str] = ...) -> None: ...
 
 class SubscribeChannelRequest(_message.Message):
-    __slots__ = ("channel", "timeout")
+    __slots__ = ("client_id", "channel")
+    CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
     CHANNEL_FIELD_NUMBER: _ClassVar[int]
-    TIMEOUT_FIELD_NUMBER: _ClassVar[int]
+    client_id: str
     channel: str
-    timeout: int
-    def __init__(self, channel: _Optional[str] = ..., timeout: _Optional[int] = ...) -> None: ...
+    def __init__(self, client_id: _Optional[str] = ..., channel: _Optional[str] = ...) -> None: ...
+
+class SubscribeChannelResponse(_message.Message):
+    __slots__ = ("success", "operation_status_message")
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    OPERATION_STATUS_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    operation_status_message: str
+    def __init__(self, success: bool = ..., operation_status_message: _Optional[str] = ...) -> None: ...
 
 class ReceiveMessageRequest(_message.Message):
-    __slots__ = ("channel", "timeout")
+    __slots__ = ("client_id", "channel")
+    CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
     CHANNEL_FIELD_NUMBER: _ClassVar[int]
-    TIMEOUT_FIELD_NUMBER: _ClassVar[int]
+    client_id: str
     channel: str
-    timeout: int
-    def __init__(self, channel: _Optional[str] = ..., timeout: _Optional[int] = ...) -> None: ...
+    def __init__(self, client_id: _Optional[str] = ..., channel: _Optional[str] = ...) -> None: ...
 
 class Message(_message.Message):
     __slots__ = ("content",)

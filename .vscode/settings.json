@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./python/simple_pb2_"
+    ]
+}

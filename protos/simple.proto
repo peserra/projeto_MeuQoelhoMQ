@@ -6,10 +6,10 @@ service MessageManager {
     rpc CreateChannel(CreateChannelRequest) returns (CreateChannelResponse);
     rpc RemoveChannel(RemoveChannelRequest) returns (RemoveChannelResponse);
     rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse);
-    rpc SubscribeChannelUnary(SubscribeChannelRequest) returns (Message);
-    rpc SubscribeChannelStream(SubscribeChannelRequest) returns (stream Message);
     rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
-    rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
+    rpc SubscribeChannel(SubscribeChannelRequest) returns (SubscribeChannelResponse);
+    rpc ReceiveMessageUnary(ReceiveMessageRequest) returns (Message);
+    rpc ReceiveMessageStream(ReceiveMessageRequest) returns (stream Message);
     //rpc Ping(noParam) returns (noParam);
 
 }
@@ -61,13 +61,19 @@ message PublishMessageResponse {
 }
 
 message SubscribeChannelRequest {
-    string channel = 1;
-    int32 timeout = 2; // in seconds
+    string client_id = 1;
+    string channel = 2;
+}
+
+message SubscribeChannelResponse{
+    bool success = 1;
+    // sucesso ou falha
+    string operation_status_message = 2; 
 }
 
 message ReceiveMessageRequest {
-    string channel = 1;
-    int32 timeout = 2; // in seconds
+    string client_id = 1;
+    string channel = 2;
 }
 
 message Message {
