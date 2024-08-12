@@ -27,6 +27,12 @@ def main():
         print(f"recebido do server cliente 2: {resposta}")
         resposta = client_stub.ReceiveMessageUnary(simple_pb2.ReceiveMessageRequest(client_id='2',channel ="canal3"))
         print(f"recebido do server cliente 2: {resposta}")
+
+    with grpc.insecure_channel("127.0.2.1:12345") as channel:
+        client_stub = simple_pb2_grpc.MessageManagerStub(channel)
+
+        resposta = client_stub.ListChannels(simple_pb2.ListChannelsRequest())
+        print(f"recebido do server: {resposta}")
     
 
 if __name__ == "__main__":
