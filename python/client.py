@@ -14,7 +14,7 @@ def main():
         publish_response = client_stub.PublishMessage(
             simple_pb2.PublishMessageRequest(
                 channel='canal3',
-                messageList=[simple_pb2.Message(content="Primeira mensagem"), simple_pb2.Message(content="Segunda mensagem")]
+                messageList=[simple_pb2.Message(content="Primeira mensagem"), simple_pb2.Message(content="Segunda mensagem"), simple_pb2.Message(content="Hello, guys!")]
             ))
         print(f"PublishMessage Response: {publish_response}")
 
