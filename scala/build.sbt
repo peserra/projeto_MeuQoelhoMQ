@@ -1,35 +1,29 @@
-import scalapb.compiler.Version.scalapbVersion
-name := "grpc-client"
-version := "0.1"
+val scala3Version = "3.3.0"
+val http4sVersion = "0.23.23"
+val weaverVersion = "0.8.3"
+val squantsVersion = "1.8.3"
 
-libraryDependencies ++= Seq(
-  "io.grpc" % "grpc-netty" % "1.53.0",
-  "io.grpc" % "grpc-protobuf" % "1.53.0",
-  "io.grpc" % "grpc-stub" % "1.53.0",
-  "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % "0.11.11",
-  "net.java.dev.jna" % "jna" % "5.9.0"
-)
-
-ThisBuild / version := "0.1.0-SNAPSHOT"
-ThisBuild / scalaVersion := "2.13.12"
-javaOptions += "-Djna.library.path=/path/to/jna"
-
-lazy val root = (project in file("."))
-  .settings(
-    name := "grpc-scala-client",
-    libraryDependencies ++= Seq(
-      "io.grpc" % "grpc-netty" % "1.53.0",
-      "io.grpc" % "grpc-protobuf" % "1.53.0",
-      "io.grpc" % "grpc-stub" % "1.53.0",
-      "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % "0.11.11"
-    ),
-    Compile / PB.protoSources := Seq(file("../protos")),
-    Compile / PB.targets := Seq(
-      scalapb.gen(grpc = true) -> (Compile / sourceManaged).value / "scalapb"
+lazy val protobuf =
+  project
+    .in(file("protobuf"))
+    .settings(
+      name := "protobuf",
+      scalaVersion := scala3Version,
+      libraryDependencies += "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
+      libraryDependencies += "org.typelevel" %% "squants" % squantsVersion
     )
-  )
+    .enablePlugins(Fs2Grpc)
 
-Compile / PB.protoSources := Seq(file("../protos"))
-Compile / PB.targets := Seq(
-  scalapb.gen(grpc = true) -> (Compile / sourceManaged).value / "scalapb"
-)
+lazy val root =
+  project
+    .in(file("."))
+    .settings(
+      name := "root",
+      scalaVersion := scala3Version,
+      libraryDependencies ++= Seq(
+        "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
+        "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
+        "org.typelevel" %% "squants" % squantsVersion
+      )
+    )
+    .dependsOn(protobuf)

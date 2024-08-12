@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package teste_grpc;
+
+service MessageManager {
+    rpc CreateChannel(CreateChannelRequest) returns (CreateChannelResponse);
+    rpc RemoveChannel(RemoveChannelRequest) returns (RemoveChannelResponse);
+    rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse);
+    rpc SubscribeChannelUnary(SubscribeChannelRequest) returns (Message);
+    rpc SubscribeChannelStream(SubscribeChannelRequest) returns (stream Message);
+    rpc PublishMessage(PublishMessageRequest) returns (PublishMessageResponse);
+    rpc ReceiveMessage(ReceiveMessageRequest) returns (Message);
+    //rpc Ping(noParam) returns (noParam);
+
+}
+
+message CreateChannelRequest {
+    string name = 1;
+    ChannelType type = 2;
+}
+
+message CreateChannelResponse {
+    bool success = 1;
+
+    // sucesso ou falha
+    string operation_status_message = 2;
+}
+
+message RemoveChannelRequest {
+    string name = 1;
+}
+
+message RemoveChannelResponse {
+    bool success = 1;
+    // sucesso ou falha
+    string operation_status_message = 2;
+}
+
+// retorno de lista de canais abertos
+message ListChannelsRequest {}
+
+message ListChannelsResponse {
+    repeated ChannelInfo channels = 1;
+}
+
+message ChannelInfo {
+    string name = 1;
+    ChannelType type = 2;
+    int32 pendingMessages = 3;
+}
+
+message PublishMessageRequest {
+    string channel = 1;
+    repeated Message messageList = 2;
+}
+
+message PublishMessageResponse {
+    bool success = 1;
+    // sucesso ou falha
+    string operation_status_message = 2;
+}
+
+message SubscribeChannelRequest {
+    string channel = 1;
+    int32 timeout = 2; // in seconds
+}
+
+message ReceiveMessageRequest {
+    string channel = 1;
+    int32 timeout = 2; // in seconds
+}
+
+message Message {
+    string content = 1;
+}
+
+enum ChannelType {
+    BUG = 0; // nao use esse valor
+    SIMPLE = 1;
+    MULTIPLE = 2;
+}
+
+// salvar mensagens para persistencia de dados nas listas
+
+message ChannelsList {
+    repeated Channel channels = 1;
+}
+
+message Channel {
+    string name = 1;
+    ChannelType type = 2;
+    repeated string messages = 3;
+}
